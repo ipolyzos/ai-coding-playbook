@@ -1,0 +1,13 @@
+{
+  "id": "container-copy-task",
+  "description": "Container restriction smoke test; not an AI-agent benchmark.",
+  "image": "python:3.12-alpine",
+  "command": [
+    "python3",
+    "solution.py"
+  ],
+  "timeout_seconds": 60,
+  "expected_files": {
+    "result.txt": "ddb243a73ed69152288ce349432a72f5c9786fb94ae6c99c8620fbe9fa253628"
+  }
+}
