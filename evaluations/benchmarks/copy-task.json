@@ -7,6 +7,6 @@
   ],
   "timeout_seconds": 15,
   "expected_files": {
-    "result.txt": "0d0c3d45d115ae24985b7a52a70b9e730a41ad42132d0cf35b8c866abf6ed0ac"
+    "result.txt": "ddb243a73ed69152288ce349432a72f5c9786fb94ae6c99c8620fbe9fa253628"
   }
 }
