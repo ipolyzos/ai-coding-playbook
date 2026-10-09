@@ -17,6 +17,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Configure my coding assistant | [Tool adapters](adapters/README.md) |
 | Evaluate workflow outcomes | [Evaluation guide](evaluations/README.md) |
 | Record command execution evidence | [Executable benchmarks](evaluations/benchmarks/README.md) |
+| Review container execution boundaries | [Container security guide](evaluations/benchmarks/CONTAINER_SECURITY.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
 ## How to use
