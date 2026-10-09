@@ -1,0 +1,12 @@
+{
+  "task_id": "example-feature",
+  "overall_status": "passed",
+  "checks": [
+    {
+      "name": "Local links and JSON parsing",
+      "status": "passed",
+      "command": "python3 scripts/validate.py",
+      "evidence": "JSON and local Markdown links validated"
+    }
+  ]
+}
