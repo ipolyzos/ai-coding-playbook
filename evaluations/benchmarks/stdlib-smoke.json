@@ -1,0 +1,10 @@
+{
+  "id": "stdlib-smoke",
+  "description": "Verify Python stdlib execution and exit status; infrastructure smoke test only, not an agent benchmark.",
+  "command": [
+    "python3",
+    "-c",
+    "print('benchmark smoke')"
+  ],
+  "timeout_seconds": 15
+}
