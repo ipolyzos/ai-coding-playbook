@@ -16,5 +16,7 @@ jobs:
         run: python3 scripts/validate.py
       - name: Validate contracts
         run: python3 scripts/validate_contracts.py
-      - name: Run contract regression tests
+      - name: Run regression tests
         run: python3 -m unittest discover -s tests -v
+      - name: Evaluate passing fixture
+        run: python3 scripts/evaluate.py evaluations/fixtures/good-run.json
