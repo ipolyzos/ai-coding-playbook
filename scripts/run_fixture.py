@@ -12,6 +12,7 @@ import shutil
 import sys
 import tempfile
 
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.run_benchmark import execute
 
 
@@ -25,6 +26,8 @@ def run_fixture(definition, fixture, output):
         candidate = Path(path)
         if candidate.is_absolute() or ".." in candidate.parts or not path or not isinstance(digest, str) or len(digest) != 64:
             raise ValueError("Invalid expected artifact path or digest")
+    if any(p.is_symlink() for p in fixture.rglob("*")):
+        raise ValueError("Fixture contains symlinks")
     with tempfile.TemporaryDirectory(prefix="playbook-fixture-") as temporary:
         workspace = Path(temporary) / "workspace"
         shutil.copytree(fixture, workspace, symlinks=False)
