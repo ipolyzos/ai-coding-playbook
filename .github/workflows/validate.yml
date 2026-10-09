@@ -20,3 +20,5 @@ jobs:
         run: python3 -m unittest discover -s tests -v
       - name: Evaluate passing fixture
         run: python3 scripts/evaluate.py evaluations/fixtures/good-run.json
+      - name: Verify executable benchmark smoke test
+        run: python3 scripts/run_benchmark.py evaluations/benchmarks/stdlib-smoke.json --cwd . --output /tmp/playbook-smoke-evidence.json
