@@ -1,0 +1,15 @@
+{
+  "id": "uppercase-copy",
+  "description": "Implement solution.py to read input.txt and write result.txt with ASCII uppercase bytes.",
+  "image": "python:3.12-alpine",
+  "timeout_seconds": 60,
+  "acceptance": {
+    "command": [
+      "python3",
+      "solution.py"
+    ],
+    "expected_files": {
+      "result.txt": "ddb243a73ed69152288ce349432a72f5c9786fb94ae6c99c8620fbe9fa253628"
+    }
+  }
+}
