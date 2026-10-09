@@ -32,3 +32,7 @@ python3 scripts/run_fixture.py evaluations/benchmarks/copy-task.json --fixture e
 ```
 
 The source fixture is not modified. Artifact assertions are independently computed by the runner after execution, and their outcomes are saved with command evidence. This **is not a security sandbox**: subprocesses retain host permissions and may access the network, environment variables, or filesystem outside the temporary workspace. Run only reviewed, trusted commands; use an OS/container sandbox before introducing untrusted agent-generated code.
+
+## Restricted Docker execution
+
+For reviewed commands in a container with reduced privileges, see [container execution and threat model](CONTAINER_SECURITY.md). This is a stronger boundary than a temporary directory but is not a hardened sandbox. The default CI tests verify Docker command construction only; a real Docker smoke test is opt-in.
