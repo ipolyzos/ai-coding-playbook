@@ -11,18 +11,19 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import uuid
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 from scripts.run_benchmark import execute
 
 
-def docker_argv(image, workspace, command):
+def docker_argv(image, workspace, command, container_name=None):
     if not isinstance(image, str) or not image or any(c.isspace() for c in image):
         raise ValueError("A nonempty Docker image reference is required")
     if not isinstance(command, list) or not command or not all(isinstance(x, str) and x for x in command):
         raise ValueError("Command must be a nonempty argv list")
     return [
-        "docker", "run", "--rm", "--network", "none",
+        "docker", "run", "--rm", *(["--name", container_name] if container_name else []), "--network", "none",
         "--cap-drop", "ALL", "--security-opt", "no-new-privileges",
         "--read-only", "--pids-limit", "64", "--memory", "256m",
         "--cpus", "1", "--user", "65534:65534",
@@ -56,13 +57,25 @@ def run(definition, fixture, output):
                 p.chmod(0o777)
             else:
                 p.chmod(0o666)
-        argv = docker_argv(definition["image"], workspace, definition["command"])
-        evidence = execute({"id": definition["id"], "command": argv, "timeout_seconds": definition["timeout_seconds"]}, Path(temp), output)
+        name = "playbook-" + uuid.uuid4().hex
+        argv = docker_argv(definition["image"], workspace, definition["command"], name)
+        try:
+            evidence = execute({"id": definition["id"], "command": argv, "timeout_seconds": definition["timeout_seconds"]}, Path(temp), output)
+        finally:
+            try:
+                cleanup = subprocess.run(
+                    ["docker", "rm", "--force", name],
+                    capture_output=True, text=True, timeout=15, check=False,
+                )
+                cleanup_ok = cleanup.returncode == 0 or "No such container" in cleanup.stderr
+            except (OSError, subprocess.TimeoutExpired):
+                cleanup_ok = False
+        evidence["cleanup_succeeded"] = cleanup_ok
         assertions = {}
         for relative, digest in expected.items():
             artifact = workspace / relative
             assertions[relative] = artifact.is_file() and not artifact.is_symlink() and artifact.resolve().is_relative_to(workspace.resolve()) and hashlib.sha256(artifact.read_bytes()).hexdigest() == digest
-        result = {**evidence, "assertions": assertions, "passed": evidence["passed"] and all(assertions.values()), "execution_mode": "docker-restricted"}
+        result = {**evidence, "assertions": assertions, "passed": evidence["passed"] and cleanup_ok and all(assertions.values()), "execution_mode": "docker-restricted"}
         output.write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
         return result
 
