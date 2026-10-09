@@ -20,7 +20,14 @@ Choose the smallest template matching the task. Replace bracketed placeholders w
 | Goal | Prompt |
 | --- | --- |
 | Validate scope and authority | [Task intake](autonomous/task-intake.md) |
+| Inspect a repository | [Repository discovery](autonomous/repository-discovery.md) |
+| Plan bounded execution | [Execution plan](autonomous/execution-plan.md) |
+| Implement in increments | [Incremental implementation](autonomous/incremental-implementation.md) |
 | Verify bounded changes | [Validation loop](autonomous/validation-loop.md) |
+| Review agent output | [Self-review](autonomous/self-review.md) |
+| Control authorization boundaries | [Scope control](autonomous/scope-control.md) |
+| Recover from failures | [Failure recovery](autonomous/failure-recovery.md) |
+| Report completion evidence | [Completion report](autonomous/completion-report.md) |
 
 ## Usage
 
