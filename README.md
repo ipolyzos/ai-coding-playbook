@@ -14,6 +14,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Set engineering expectations | [Engineering standards](instructions/engineering.md) |
 | Require evidence | [Verification standards](instructions/verification.md) |
 | Define and validate contracts | [Contract guide](contracts/README.md) |
+| Configure my coding assistant | [Tool adapters](adapters/README.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
 ## How to use
@@ -34,6 +35,7 @@ Use [the task example](contracts/examples/feature-task.json) as a starting point
 - `prompts/autonomous/` — bounded agent execution workflows.
 - `instructions/` — reusable engineering expectations.
 - `contracts/` — machine-readable task schemas and examples.
+- `adapters/` — installation guides for supported coding assistants.
 - `scripts/` — deterministic validation.
 - `.github/workflows/` — CI quality gates.
 
@@ -46,4 +48,4 @@ python3 scripts/validate_contracts.py
 python3 -m unittest discover -s tests -v
 ```
 
-This is an incremental foundation, not the complete catalog. Further templates, adapters, contract validation, and evaluation fixtures will be delivered in separate focused PRs.
+This is an incremental foundation, not the complete catalog. Additional templates and evaluation fixtures will be delivered in separate focused PRs.
