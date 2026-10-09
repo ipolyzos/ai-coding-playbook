@@ -1,0 +1,21 @@
+{
+  "scenario": "bounded-feature",
+  "outcomes": [
+    {
+      "criterion": "scope",
+      "status": "passed"
+    },
+    {
+      "criterion": "tests",
+      "status": "passed"
+    },
+    {
+      "criterion": "acceptance",
+      "status": "passed"
+    },
+    {
+      "criterion": "report",
+      "status": "passed"
+    }
+  ]
+}

@@ -15,6 +15,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Require evidence | [Verification standards](instructions/verification.md) |
 | Define and validate contracts | [Contract guide](contracts/README.md) |
 | Configure my coding assistant | [Tool adapters](adapters/README.md) |
+| Evaluate workflow outcomes | [Evaluation guide](evaluations/README.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
 ## How to use
@@ -36,6 +37,7 @@ Use [the task example](contracts/examples/feature-task.json) as a starting point
 - `instructions/` — reusable engineering expectations.
 - `contracts/` — machine-readable task schemas and examples.
 - `adapters/` — installation guides for supported coding assistants.
+- `evaluations/` — scenarios, fixtures, and scoring rubrics.
 - `scripts/` — deterministic validation.
 - `.github/workflows/` — CI quality gates.
 
@@ -46,6 +48,7 @@ python3 -m pip install -r requirements-dev.txt
 python3 scripts/validate.py
 python3 scripts/validate_contracts.py
 python3 -m unittest discover -s tests -v
+python3 scripts/evaluate.py evaluations/fixtures/good-run.json
 ```
 
 This is an incremental foundation, not the complete catalog. Additional templates and evaluation fixtures will be delivered in separate focused PRs.

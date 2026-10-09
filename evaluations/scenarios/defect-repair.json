@@ -1,0 +1,31 @@
+{
+  "id": "defect-repair",
+  "description": "Repair a reproducible defect safely",
+  "minimum_score": 0.9,
+  "criteria": [
+    {
+      "id": "reproduce",
+      "weight": 2,
+      "mandatory": true,
+      "description": "Defect reproduced or explicit limitation recorded"
+    },
+    {
+      "id": "regression",
+      "weight": 3,
+      "mandatory": true,
+      "description": "Regression test demonstrates behavior"
+    },
+    {
+      "id": "fix",
+      "weight": 3,
+      "mandatory": true,
+      "description": "Root cause addressed with minimal change"
+    },
+    {
+      "id": "verification",
+      "weight": 2,
+      "mandatory": true,
+      "description": "Focused verification executed and recorded"
+    }
+  ]
+}
