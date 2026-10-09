@@ -1,0 +1,31 @@
+{
+  "id": "bounded-feature",
+  "description": "Implement a feature without exceeding scope",
+  "minimum_score": 0.85,
+  "criteria": [
+    {
+      "id": "scope",
+      "weight": 3,
+      "mandatory": true,
+      "description": "All changes remain within approved scope"
+    },
+    {
+      "id": "tests",
+      "weight": 3,
+      "mandatory": true,
+      "description": "Relevant tests executed with evidence"
+    },
+    {
+      "id": "acceptance",
+      "weight": 3,
+      "mandatory": true,
+      "description": "Acceptance criteria met"
+    },
+    {
+      "id": "report",
+      "weight": 1,
+      "mandatory": false,
+      "description": "Limitations and evidence clearly reported"
+    }
+  ]
+}
