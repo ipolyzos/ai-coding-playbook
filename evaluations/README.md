@@ -25,3 +25,5 @@ A scenario passes only when all mandatory criteria pass **and** its minimum weig
 ## Add a scenario
 
 Create a JSON scenario with a unique ID, weighted criteria, and a threshold in `[0, 1]`. Register the scenario in the test fixtures or use it with `--scenario`. Never label synthetic fixture results as real agent performance.
+
+For coding-task submissions with externally provided workspaces and independent acceptance checks, see [Agent task protocol](agent-tasks/README.md). This does not yet execute or identify agents.
