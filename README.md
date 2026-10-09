@@ -1,1 +1,46 @@
-# ai-coding-playbook
+# AI Coding Playbook
+
+Portable, engineering-first prompts and execution contracts for interactive AI coding and autonomous engineering workflows.
+
+## Start here
+
+| I want to… | Open |
+| --- | --- |
+| Implement a feature | [Implementation prompt](prompts/interactive/implement.md) |
+| Debug a defect | [Debugging prompt](prompts/interactive/debug.md) |
+| Delegate an agent task | [Task intake](prompts/autonomous/task-intake.md) |
+| Validate agent work | [Validation loop](prompts/autonomous/validation-loop.md) |
+| Browse all prompts | [Prompt catalog](prompts/README.md) |
+| Set engineering expectations | [Engineering standards](instructions/engineering.md) |
+| Require evidence | [Verification standards](instructions/verification.md) |
+| Define agent scope | [Task contract schema](contracts/task.schema.json) |
+| Contribute | [Contribution guide](CONTRIBUTING.md) |
+
+## How to use
+
+1. Pick the smallest prompt matching the engineering task.
+2. Supply concrete context, allowed scope, non-goals, and acceptance criteria.
+3. Apply repository-specific standards alongside the shared instructions.
+4. For autonomous work, use a validated task contract and explicit approval boundaries.
+5. Verify changes with repository tests and CI before accepting completion.
+
+### Example
+
+Use [the task example](contracts/examples/feature-task.json) as a starting point for structured delegation.
+
+## Layout
+
+- `prompts/interactive/` — engineer-directed workflows.
+- `prompts/autonomous/` — bounded agent execution workflows.
+- `instructions/` — reusable engineering expectations.
+- `contracts/` — machine-readable task schemas and examples.
+- `scripts/` — deterministic validation.
+- `.github/workflows/` — CI quality gates.
+
+## Local checks
+
+```sh
+python3 scripts/validate.py
+```
+
+This is an incremental foundation, not the complete catalog. Further templates, adapters, contract validation, and evaluation fixtures will be delivered in separate focused PRs.

@@ -1,0 +1,22 @@
+{
+  "objective": "Add a documented prompt template",
+  "scope": {
+    "allowed_paths": [
+      "prompts/interactive/",
+      "prompts/README.md"
+    ],
+    "forbidden_actions": [
+      "deploy",
+      "delete branches",
+      "change repository permissions"
+    ]
+  },
+  "acceptance_criteria": [
+    "Template has inputs, workflow, and verification instructions",
+    "Catalog links to template"
+  ],
+  "approval_required": [
+    "merge pull request",
+    "expand scope"
+  ]
+}
