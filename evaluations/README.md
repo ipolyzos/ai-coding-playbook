@@ -2,6 +2,8 @@
 
 Evaluations measure whether a workflow follows engineering constraints, not whether its prose sounds convincing. This initial harness scores **recorded outcomes** against deterministic rubrics; it does not run coding agents or verify that claims in a submitted report are truthful.
 
+For command-execution evidence (not agent execution), see [Executable benchmarks](benchmarks/README.md).
+
 ## Run locally
 
 ```sh
