@@ -19,6 +19,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Record command execution evidence | [Executable benchmarks](evaluations/benchmarks/README.md) |
 | Review container execution boundaries | [Container security guide](evaluations/benchmarks/CONTAINER_SECURITY.md) |
 | Verify a coding-task submission | [Agent task protocol](evaluations/agent-tasks/README.md) |
+| Record agent run metadata | [Provenance protocol](evaluations/agent-tasks/PROVENANCE.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
 ## How to use

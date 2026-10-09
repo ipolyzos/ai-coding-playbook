@@ -17,3 +17,5 @@ This requires Docker and an available image. The checker runs the acceptance com
 A submission may contain arbitrary code. This container configuration is **not a hardened sandbox**. Run only reviewed submissions on a dedicated disposable host without credentials. Do not run untrusted third-party code on a developer workstation or a privileged Docker daemon. The current runner also copies submitted files into a temporary directory; keep submissions small and free of secrets.
 
 Next steps: immutable task fixtures, hidden acceptance tests, verified adapter execution traces, and aggregate comparisons across tools.
+
+For manually recording declared coding-agent metadata, transcript hashes, and workspace fingerprints, see [run provenance](PROVENANCE.md). This records claims; it does not authenticate agent identity.
