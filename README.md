@@ -18,6 +18,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Evaluate workflow outcomes | [Evaluation guide](evaluations/README.md) |
 | Record command execution evidence | [Executable benchmarks](evaluations/benchmarks/README.md) |
 | Review container execution boundaries | [Container security guide](evaluations/benchmarks/CONTAINER_SECURITY.md) |
+| Verify a coding-task submission | [Agent task protocol](evaluations/agent-tasks/README.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
 ## How to use
