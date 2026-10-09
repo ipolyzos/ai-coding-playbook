@@ -13,7 +13,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Browse all prompts | [Prompt catalog](prompts/README.md) |
 | Set engineering expectations | [Engineering standards](instructions/engineering.md) |
 | Require evidence | [Verification standards](instructions/verification.md) |
-| Define agent scope | [Task contract schema](contracts/task.schema.json) |
+| Define and validate contracts | [Contract guide](contracts/README.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
 ## How to use
@@ -40,7 +40,10 @@ Use [the task example](contracts/examples/feature-task.json) as a starting point
 ## Local checks
 
 ```sh
+python3 -m pip install -r requirements-dev.txt
 python3 scripts/validate.py
+python3 scripts/validate_contracts.py
+python3 -m unittest discover -s tests -v
 ```
 
 This is an incremental foundation, not the complete catalog. Further templates, adapters, contract validation, and evaluation fixtures will be delivered in separate focused PRs.

@@ -1,0 +1,13 @@
+{
+  "task_id": "example-feature",
+  "summary": "Added a documented prompt template",
+  "acceptance": [
+    {
+      "criterion": "Template has inputs and verification instructions",
+      "status": "met",
+      "evidence": "prompts/interactive/implement.md"
+    }
+  ],
+  "validation": "passed",
+  "limitations": []
+}
