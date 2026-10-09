@@ -1,0 +1,12 @@
+{
+  "id": "copy-task",
+  "description": "Infrastructure fixture: execute a known script and independently verify its output hash; not an AI benchmark.",
+  "command": [
+    "python3",
+    "solution.py"
+  ],
+  "timeout_seconds": 15,
+  "expected_files": {
+    "result.txt": "ddb243a73ed69152288ce349432a72f5c9786fb94ae6c99c8620fbe9fa253628"
+  }
+}

@@ -22,3 +22,13 @@ The smoke test proves only that command execution and evidence recording work. N
 ## Next iteration
 
 Add isolated repository fixtures, agent adapters, assertions against produced artifacts, and baseline comparisons. Keep those separate from this infrastructure-only smoke test.
+
+## Disposable fixture and artifact verification
+
+Run the trusted sample in a temporary copy of its fixture, then compare the generated artifact with a pinned SHA-256:
+
+```sh
+python3 scripts/run_fixture.py evaluations/benchmarks/copy-task.json --fixture evaluations/benchmarks/fixtures/copy-task --output /tmp/playbook-copy-evidence.json
+```
+
+The source fixture is not modified. Artifact assertions are independently computed by the runner after execution, and their outcomes are saved with command evidence. This **is not a security sandbox**: subprocesses retain host permissions and may access the network, environment variables, or filesystem outside the temporary workspace. Run only reviewed, trusted commands; use an OS/container sandbox before introducing untrusted agent-generated code.
