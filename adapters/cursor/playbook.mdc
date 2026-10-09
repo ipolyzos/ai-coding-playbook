@@ -1,0 +1,5 @@
+---
+description: Shared AI coding playbook engineering guardrails
+alwaysApply: true
+---
+Read the repository's `AGENTS.md`, `instructions/engineering.md`, and `instructions/verification.md` if present. If missing, request the canonical playbook location. Follow the task-specific prompt explicitly selected by the engineer. Keep scope bounded and report actual verification evidence. Never merge, deploy, publish, or run destructive actions without authorization.
