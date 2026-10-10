@@ -41,3 +41,16 @@ Task creation rejects symlinked `tasks/` directories, non-directory destination 
 ## Review existing tasks
 
 Use `python3 -m aicp task list --path /path/to/project` to list and validate local task drafts, `python3 -m aicp task show --path /path/to/project --name fix-retry` to print a task, and `python3 -m aicp task validate --path /path/to/project --name fix-retry` for a machine-readable validity result. Invalid or symlinked task files are rejected. Validation checks structure and basic allowed-path syntax; it **does not enforce agent permissions, inspect whether a task is completed, or execute acceptance criteria**.
+
+## Supervised agent execution (experimental)
+
+The `aicp run` command invokes an explicitly selected local Codex, Claude, or Gemini CLI and, **only after a successful agent exit**, runs trusted checks. It requires `--approve-host-execution`. Example, in a disposable isolated environment with the vendor CLI already installed and authenticated:
+
+```sh
+aicp run --path /path/to/project --name fix-retry \
+  --tool codex --checks /path/to/project/checks.json \
+  --output /tmp/aicp-run.json --approve-host-execution \
+  -- codex exec "Read tasks/fix-retry.json and implement the approved task"
+```
+
+The report records agent exit status, output hashes, verification results, and whether both stages passed. This is **not a sandbox**, and task allowed paths are **not enforced**. The agent executes on your host with your permissions and can change the checks file before verification; independently review the resulting code and checks before trusting the outcome. Do not pass secrets in command arguments, run on sensitive workspaces, or treat a passing report as permission to merge. CI uses mocked agent execution only. The command does not create branches, PRs, or merges.

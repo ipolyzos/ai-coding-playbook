@@ -8,6 +8,7 @@ import sys
 from . import __version__
 from .tasks import create_task
 from .task_lifecycle import show_task, list_tasks
+from .execution import run_task
 from .verification import verify as run_verification
 from .entrypoints import ENTRYPOINTS, install_entrypoint
 from .planning import plan_init
@@ -115,6 +116,15 @@ def main(argv=None):
         command.add_argument("--path", type=Path, default=Path("."))
         if action != "list":
             command.add_argument("--name", required=True)
+    run_parser = commands.add_parser("run", help="Run approved local agent and checks (not sandboxed)")
+    run_parser.add_argument("--path", type=Path, default=Path("."))
+    run_parser.add_argument("--name", required=True)
+    run_parser.add_argument("--tool", choices=("codex", "claude", "gemini"), required=True)
+    run_parser.add_argument("--checks", type=Path, required=True)
+    run_parser.add_argument("--output", type=Path, required=True)
+    run_parser.add_argument("--timeout", type=int, default=300)
+    run_parser.add_argument("--approve-host-execution", action="store_true", required=True)
+    run_parser.add_argument("agent_argv", nargs=argparse.REMAINDER)
     verify_parser = commands.add_parser("verify", help="Run explicit project checks")
     verify_parser.add_argument("--path", type=Path, default=Path("."))
     verify_parser.add_argument("--checks", type=Path, required=True)
@@ -154,6 +164,12 @@ def main(argv=None):
                 if not check["passed"]:
                     print(f"  Check {index}: {check['status']} (exit={check['exit_code']})")
             return 0 if result["passed"] else 1
+        elif args.command == "run":
+            validate_config(args.path)
+            argv = args.agent_argv[1:] if args.agent_argv and args.agent_argv[0] == "--" else args.agent_argv
+            report = run_task(args.path, args.name, args.tool, argv, args.checks, args.output, args.timeout)
+            print(f"Execution {'passed' if report['passed'] else 'failed'}: {args.output}")
+            return 0 if report["passed"] else 1
         elif args.command == "task":
             validate_config(args.path)
             if args.task_command == "create":
