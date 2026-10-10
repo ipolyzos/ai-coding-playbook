@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-coding-playbook"
+version = "0.1.0"
+description = "Engineering-first task, onboarding, and verification CLI for AI-assisted coding"
+readme = "README.md"
+requires-python = ">=3.10"
+license = "Apache-2.0"
+authors = [{name = "AI Coding Playbook contributors"}]
+keywords = ["coding-assistants", "developer-tools", "verification"]
+classifiers = [
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3 :: Only",
+]
+dependencies = []
+
+[project.scripts]
+aicp = "aicp.__main__:main"
+
+[tool.setuptools]
+packages = ["aicp"]
