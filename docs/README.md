@@ -1,6 +1,6 @@
 # Documentation
 
-Start with [Getting started](GETTING_STARTED.md) for setup, examples, workflow, repository layout, and local checks.
+Start with [Getting started](GETTING_STARTED.md) for a quick setup, or follow the [practical end-to-end walkthrough](PRACTICAL_WALKTHROUGH.md) for a complete example from onboarding through verification and PR review.
 
 ## CLI and onboarding
 
