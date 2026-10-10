@@ -45,7 +45,18 @@ def run_checks(project, checks, timeout=120):
             "stderr_bytes": len(stderr),
             "passed": status == "completed" and exit_code == 0,
         })
-    return {"schema_version": 1, "passed": all(item["passed"] for item in results), "checks": results}
+    return {
+        "schema_version": 1,
+        "passed": all(item["passed"] for item in results),
+        "summary": {
+            "total": len(results),
+            "passed": sum(item["passed"] for item in results),
+            "failed": sum(not item["passed"] for item in results),
+            "timed_out": sum(item["status"] == "timeout" for item in results),
+            "launch_errors": sum(item["status"] == "launch_error" for item in results),
+        },
+        "checks": results,
+    }
 
 
 def verify(project, config_path, timeout=120):
