@@ -2,6 +2,8 @@
 
 Start with [Getting started](GETTING_STARTED.md) for quick setup, the [practical walkthrough](PRACTICAL_WALKTHROUGH.md) for a supervised end-to-end example, or the [usage guide](USAGE_GUIDE.md) for additional fictional workflows and privacy guidance.
 
+- [Runnable practical example: synthetic Python service](../examples/practical/README.md)
+
 ## CLI and onboarding
 
 - [CLI commands](CLI.md)
