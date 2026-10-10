@@ -2,6 +2,8 @@
 
 This guide shows how to use AI Coding Playbook with an existing Python project and Codex. The same engineering workflow applies to other supported assistants. The playbook provides instructions, task drafts, and verification; the basic CLI **does not automatically execute an agent, create a pull request, or merge changes**.
 
+Prefer a fully runnable exercise? Start with the [synthetic Python example](../examples/practical/README.md), which includes tested code and a checks file.
+
 ## 1. Clone the playbook
 
 ```sh
