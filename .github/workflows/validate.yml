@@ -28,3 +28,30 @@ jobs:
         run: python3 scripts/run_benchmark.py evaluations/benchmarks/stdlib-smoke.json --cwd . --output /tmp/playbook-smoke-evidence.json
       - name: Verify fixture artifact assertions
         run: python3 scripts/run_fixture.py evaluations/benchmarks/copy-task.json --fixture evaluations/benchmarks/fixtures/copy-task --output /tmp/playbook-copy-evidence.json
+
+  compatibility:
+    name: Python ${{ matrix.python }} on ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {os: ubuntu-latest, python: "3.10"}
+          - {os: ubuntu-latest, python: "3.12"}
+          - {os: ubuntu-latest, python: "3.13"}
+          - {os: macos-latest, python: "3.12"}
+    runs-on: ${{ matrix.os }}
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install package and validation dependencies
+        run: |
+          python -m pip install -e .
+          python -m pip install -r requirements-dev.txt
+      - name: Validate installed command
+        run: aicp --version
+      - name: Run regression tests
+        run: python -m unittest discover -s tests -v
