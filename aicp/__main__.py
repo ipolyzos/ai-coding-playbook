@@ -7,6 +7,7 @@ import sys
 
 from . import __version__
 from .tasks import create_task
+from .verification import verify as run_verification
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ("codex", "claude", "cursor", "copilot", "gemini")
@@ -78,11 +79,26 @@ def main(argv=None):
     create_parser.add_argument("--objective", required=True)
     create_parser.add_argument("--allow", action="append", required=True)
     create_parser.add_argument("--accept", action="append", required=True)
+    verify_parser = commands.add_parser("verify", help="Run explicit project checks")
+    verify_parser.add_argument("--path", type=Path, default=Path("."))
+    verify_parser.add_argument("--checks", type=Path, required=True)
+    verify_parser.add_argument("--output", type=Path, required=True)
+    verify_parser.add_argument("--timeout", type=int, default=120)
     args = parser.parse_args(argv)
     try:
         if args.command == "init":
             result = init(args.path, args.tool)
             print(f"Initialized {result}")
+        elif args.command == "verify":
+            validate_config(args.path)
+            result = run_verification(args.path, args.checks, args.timeout)
+            if args.output.exists() or args.output.is_symlink():
+                raise FileExistsError("Refusing to overwrite existing evidence")
+            with args.output.open("x", encoding="utf-8") as handle:
+                json.dump(result, handle, indent=2)
+                handle.write("\\n")
+            print(f"Verification {'passed' if result['passed'] else 'failed'}: {args.output}")
+            return 0 if result["passed"] else 1
         elif args.command == "task":
             validate_config(args.path)
             result = create_task(args.path, args.name, args.objective, args.allow, args.accept)
