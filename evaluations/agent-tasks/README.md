@@ -21,3 +21,5 @@ Next steps: immutable task fixtures, hidden acceptance tests, verified adapter e
 For manually recording declared coding-agent metadata, transcript hashes, and workspace fingerprints, see [run provenance](PROVENANCE.md). This records claims; it does not authenticate agent identity.
 
 For opt-in execution of an installed coding-agent CLI on a dedicated host, see [experimental CLI adapter](CLI_ADAPTER.md). It is not a security sandbox and does not run in CI.
+
+To combine opt-in CLI execution with Docker acceptance verification and produce a structured report, see [experimental orchestration](ORCHESTRATION.md).
