@@ -1,5 +1,8 @@
 # Getting started
 
+**Before you begin:** AI Coding Playbook is an experimental personal side project for exploring AI agents in everyday development workflows. The tooling and examples are for experimentation and learning, not production-ready automation. Review all generated changes and run it only in environments appropriate for experimentation.
+
+
 ## Optional CLI installation
 
 From a playbook checkout with Python 3.10+, run `python3 -m pip install -e .` (preferably inside a virtual environment). This installs the `aicp` command so you can run `aicp --help`, `aicp init`, and `aicp verify` from other working directories. Installation does not install or authenticate any vendor coding assistant. The checkout-based `python3 -m aicp` commands below remain supported. This project is not yet published to a package index.
