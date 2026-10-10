@@ -6,6 +6,8 @@ This guide shows how to use AI Coding Playbook (AICP) with an existing software 
 
 AICP provides reusable engineering prompts, assistant instruction entrypoints, bounded task definitions, and explicit verification evidence. It supports interactive development and experimental agent benchmarking. **It does not automatically implement tasks, install vendor CLIs, create PRs, or merge code.** Tool instructions are advisory; review and CI remain essential.
 
+For a **tested, runnable version** of this walkthrough using a synthetic Python service, see [the practical example](../examples/practical/README.md). It includes a sample module, tests, a verification configuration, and disposable-directory setup commands.
+
 ## 1. Keep the playbook separate from your application
 
 From a terminal with Python 3:
