@@ -23,7 +23,28 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Launch an agent CLI experimentally | [CLI adapter safety guide](evaluations/agent-tasks/CLI_ADAPTER.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
-## Quick setup\n\nUse the dependency-free CLI from a playbook checkout to initialize a separate project:\n\n\`\`\`sh\npython3 -m aicp init --tool codex --path /path/to/project\npython3 -m aicp validate --path /path/to/project\npython3 -m aicp task create --path /path/to/project --name fix-retry --objective 'Fix retry handling' --allow src/ --accept 'Unit tests pass'\n\`\`\`\n\nSee [tool-specific generated instructions](docs/TOOL_ENTRYPOINTS.md), [CLI usage and limitations](docs/CLI.md) and [local verification](docs/VERIFICATION.md). Initialization does not run an agent or install a vendor CLI.\n\n## How to use
+## Quick setup
+
+Clone the playbook, then run its dependency-free CLI from the playbook directory to initialize an existing project:
+
+```sh
+git clone https://github.com/ipolyzos/ai-coding-playbook.git
+cd ai-coding-playbook
+python3 -m aicp init --tool codex --path /path/to/project
+python3 -m aicp validate --path /path/to/project
+python3 -m aicp task create \
+  --path /path/to/project \
+  --name fix-retry \
+  --objective 'Fix retry handling' \
+  --allow src/ \
+  --accept 'Unit tests pass'
+```
+
+Replace `/path/to/project` with the path to an existing directory. Initialization refuses to overwrite existing assistant instructions; use `python3 -m aicp init --tool codex --path /path/to/project --dry-run` to preview changes first.
+
+See [tool-specific generated instructions](docs/TOOL_ENTRYPOINTS.md), [CLI usage and limitations](docs/CLI.md), and [local verification](docs/VERIFICATION.md). Initialization does not run an agent or install a vendor CLI.
+
+## How to use
 
 1. Pick the smallest prompt matching the engineering task.
 2. Supply concrete context, allowed scope, non-goals, and acceptance criteria.
