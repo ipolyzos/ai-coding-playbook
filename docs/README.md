@@ -11,6 +11,7 @@ Start with [Getting started](GETTING_STARTED.md) for quick setup, the [practical
 - [Non-destructive adoption](ADOPTION.md)
 - [Generated tool entrypoints](TOOL_ENTRYPOINTS.md)
 - [Local verification](VERIFICATION.md)
+- [Platform compatibility and agent integration](COMPATIBILITY.md)
 
 ## Engineering guides
 
