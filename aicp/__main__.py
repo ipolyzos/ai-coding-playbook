@@ -11,6 +11,7 @@ from .verification import verify as run_verification
 from .entrypoints import ENTRYPOINTS, install_entrypoint
 from .planning import plan_init
 from .inspection import inspect_project
+from .adoption import adopt, plan_adoption
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ("codex", "claude", "cursor", "copilot", "gemini")
@@ -24,13 +25,17 @@ def validate_config(destination):
     config = json.loads(config_path.read_text(encoding="utf-8"))
     if not isinstance(config, dict) or config.get("schema_version") != 1 or config.get("tool") not in TOOLS:
         raise ValueError("Invalid playbook configuration")
-    if config.get("instructions") != "AGENTS.md":
+    mode = config.get("mode", "init")
+    expected = ".aicp/PLAYBOOK.md" if mode == "adopt" else "AGENTS.md"
+    if mode not in ("init", "adopt") or config.get("instructions") != expected:
         raise ValueError("Invalid instruction file reference")
-    instructions = destination / "AGENTS.md"
+    instructions = destination / expected
     if not instructions.is_file() or instructions.is_symlink():
         raise ValueError("AGENTS.md is missing or is a symlink")
     if "AI Coding Playbook" not in instructions.read_text(encoding="utf-8"):
-        raise ValueError("AGENTS.md does not contain playbook instructions")
+        raise ValueError("Playbook instruction file is invalid")
+    if mode == "adopt" and not inspect_project(destination)["existing_instructions"]:
+        raise ValueError("Adopted repository is missing existing assistant instructions")
     return config
 
 
@@ -84,6 +89,10 @@ def main(argv=None):
     init_parser.add_argument("--dry-run", action="store_true", help="Preview without writing files")
     inspect_parser = commands.add_parser("inspect", help="Inventory existing assistant instructions")
     inspect_parser.add_argument("--path", type=Path, default=Path("."))
+    adopt_parser = commands.add_parser("adopt", help="Prepare opt-in adoption without changing existing instructions")
+    adopt_parser.add_argument("--tool", choices=TOOLS, required=True)
+    adopt_parser.add_argument("--path", type=Path, default=Path("."))
+    adopt_parser.add_argument("--dry-run", action="store_true")
     check_parser = commands.add_parser("validate", help="Validate repository setup")
     check_parser.add_argument("--path", type=Path, default=Path("."))
     task_parser = commands.add_parser("task", help="Manage engineering task drafts")
@@ -108,6 +117,14 @@ def main(argv=None):
                 return 0 if preview["ready"] else 1
             result = init(args.path, args.tool)
             print(f"Initialized {result}")
+        elif args.command == "adopt":
+            if args.dry_run:
+                preview = plan_adoption(args.path, args.tool)
+                print(json.dumps(preview, indent=2))
+                return 0 if preview["ready"] else 1
+            result = adopt(args.path, args.tool)
+            print(f"Prepared optional playbook guidance: {result}")
+            print("Manually review and reference .aicp/PLAYBOOK.md from existing instructions to enable it.")
         elif args.command == "inspect":
             print(json.dumps(inspect_project(args.path), indent=2))
         elif args.command == "verify":
