@@ -6,6 +6,7 @@ import subprocess
 import time
 
 from .task_lifecycle import show_task
+from .scope_audit import git_snapshot, audit_scope
 from .verification import run_checks, validate_checks
 
 
@@ -37,6 +38,9 @@ def run_task(project, name, tool, argv, checks_path, output, timeout=300):
     if output.exists() or output.is_symlink():
         raise FileExistsError("Refusing to overwrite execution report")
     task, task_path, task_bytes, checks_bytes, trusted_checks = _load_trusted_inputs(project, name, checks_path)
+    baseline = git_snapshot(project)
+    if baseline:
+        raise ValueError('Scope audit requires a clean Git worktree before execution')
     started = time.monotonic()
     try:
         proc = subprocess.run(argv, cwd=project, capture_output=True, timeout=timeout, check=False)
@@ -64,20 +68,23 @@ def run_task(project, name, tool, argv, checks_path, output, timeout=300):
         and task_path.read_bytes() == task_bytes
         and checks_path.read_bytes() == checks_bytes
     )
-    checks = run_checks(project, trusted_checks) if agent["passed"] and inputs_unchanged else None
+    after = git_snapshot(project)
+    scope = audit_scope(baseline, after, task["scope"]["allowed_paths"])
+    checks = run_checks(project, trusted_checks) if agent["passed"] and inputs_unchanged and scope["passed"] else None
     report = {
         "schema_version": 1,
         "task": name,
         "objective": task["objective"],
         "agent": agent,
         "verification": checks,
+        "scope_audit": scope,
         "trusted_inputs": {
             "task_sha256": hashlib.sha256(task_bytes).hexdigest(),
             "checks_sha256": hashlib.sha256(checks_bytes).hexdigest(),
             "unchanged_after_agent": inputs_unchanged,
             "verification_source": "pre-agent-snapshot",
         },
-        "passed": bool(agent["passed"] and inputs_unchanged and checks and checks["passed"]),
+        "passed": bool(agent["passed"] and inputs_unchanged and scope["passed"] and checks and checks["passed"]),
         "security_boundary": "trusted-host-execution-no-sandbox",
         "scope_enforced": False,
     }

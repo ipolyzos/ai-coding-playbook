@@ -18,6 +18,9 @@ class RunTaskTests(unittest.TestCase):
         self.checks = self.project / "checks.json"
         self.checks.write_text('{"schema_version":1,"checks":[["python3","--version"]]}', encoding="utf-8")
         self.output = self.project / "report.json"
+        git_patch = patch("aicp.execution.git_snapshot", return_value=set())
+        git_patch.start()
+        self.addCleanup(git_patch.stop)
 
     def test_successful_agent_and_checks(self):
         with patch("aicp.execution.subprocess.run") as run:
@@ -67,6 +70,25 @@ class RunTaskTests(unittest.TestCase):
         with patch("aicp.execution.subprocess.run") as agent:
             with self.assertRaises(ValueError):
                 run_task(self.project, "fix-retry", "codex", ["codex"], self.checks, self.output)
+        agent.assert_not_called()
+
+    def test_out_of_scope_changes_block_verification(self):
+        with patch("aicp.execution.git_snapshot", side_effect=[set(), {"src/fix.py", "secrets.txt"}]):
+            with patch("aicp.execution.subprocess.run") as agent:
+                agent.return_value.returncode = 0
+                agent.return_value.stdout = b""
+                agent.return_value.stderr = b""
+                with patch("aicp.execution.run_checks") as checks:
+                    result = run_task(self.project, "fix-retry", "codex", ["codex"], self.checks, self.output)
+        checks.assert_not_called()
+        self.assertFalse(result["passed"])
+        self.assertEqual(result["scope_audit"]["outside_allowed_paths"], ["secrets.txt"])
+
+    def test_dirty_worktree_rejected_before_agent(self):
+        with patch("aicp.execution.git_snapshot", return_value={"existing.txt"}):
+            with patch("aicp.execution.subprocess.run") as agent:
+                with self.assertRaisesRegex(ValueError, "clean Git worktree"):
+                    run_task(self.project, "fix-retry", "codex", ["codex"], self.checks, self.output)
         agent.assert_not_called()
 
     def test_invalid_agent_command_rejected(self):
