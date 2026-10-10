@@ -44,7 +44,7 @@ Replace `/path/to/project` with the path to an existing directory. Initializatio
 
 See [tool-specific generated instructions](docs/TOOL_ENTRYPOINTS.md), [CLI usage and limitations](docs/CLI.md), and [local verification](docs/VERIFICATION.md). Initialization does not run an agent or install a vendor CLI.
 
-## How to use
+For repositories that already have assistant instructions, use the [non-destructive adoption workflow](docs/ADOPTION.md) instead of replacing existing policy files.\n\n## How to use
 
 1. Pick the smallest prompt matching the engineering task.
 2. Supply concrete context, allowed scope, non-goals, and acceptance criteria.
