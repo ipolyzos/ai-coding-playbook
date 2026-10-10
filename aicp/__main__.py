@@ -96,7 +96,7 @@ def main(argv=None):
                 raise FileExistsError("Refusing to overwrite existing evidence")
             with args.output.open("x", encoding="utf-8") as handle:
                 json.dump(result, handle, indent=2)
-                handle.write("\\n")
+                handle.write("\n")
             print(f"Verification {'passed' if result['passed'] else 'failed'}: {args.output}")
             return 0 if result["passed"] else 1
         elif args.command == "task":
