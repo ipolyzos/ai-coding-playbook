@@ -4,6 +4,9 @@ Start with [Getting started](GETTING_STARTED.md) for setup, examples, workflow, 
 
 ## CLI and onboarding
 
+- [Practical step-by-step walkthrough](PRACTICAL_WALKTHROUGH.md)
+- [Example engineering workflows](WORKFLOWS.md)
+
 - [CLI commands](CLI.md)
 - [Inspect existing instructions](INSPECTION.md)
 - [Non-destructive adoption](ADOPTION.md)
