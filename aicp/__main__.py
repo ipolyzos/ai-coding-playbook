@@ -12,6 +12,7 @@ from .entrypoints import ENTRYPOINTS, install_entrypoint
 from .planning import plan_init
 from .inspection import inspect_project
 from .adoption import adopt, plan_adoption
+from .path_safety import require_safe_path, require_project
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ("codex", "claude", "cursor", "copilot", "gemini")
@@ -19,8 +20,9 @@ CONFIG = ".aicp.json"
 
 
 def validate_config(destination):
-    config_path = destination / CONFIG
-    if not config_path.is_file() or config_path.is_symlink():
+    require_project(destination)
+    config_path = require_safe_path(destination, CONFIG)
+    if not config_path.is_file():
         raise ValueError("Missing .aicp.json; run 'aicp init' first")
     config = json.loads(config_path.read_text(encoding="utf-8"))
     if not isinstance(config, dict) or config.get("schema_version") != 1 or config.get("tool") not in TOOLS:
@@ -29,11 +31,15 @@ def validate_config(destination):
     expected = ".aicp/PLAYBOOK.md" if mode == "adopt" else "AGENTS.md"
     if mode not in ("init", "adopt") or config.get("instructions") != expected:
         raise ValueError("Invalid instruction file reference")
-    instructions = destination / expected
-    if not instructions.is_file() or instructions.is_symlink():
-        raise ValueError("AGENTS.md is missing or is a symlink")
+    instructions = require_safe_path(destination, expected)
+    if not instructions.is_file():
+        raise ValueError("Playbook instruction file is missing")
     if "AI Coding Playbook" not in instructions.read_text(encoding="utf-8"):
         raise ValueError("Playbook instruction file is invalid")
+    if mode == "init" and ENTRYPOINTS[config["tool"]]:
+        entrypoint = require_safe_path(destination, ENTRYPOINTS[config["tool"]])
+        if not entrypoint.is_file():
+            raise ValueError("Assistant-specific instruction entrypoint is missing")
     if mode == "adopt" and not inspect_project(destination)["existing_instructions"]:
         raise ValueError("Adopted repository is missing existing assistant instructions")
     return config

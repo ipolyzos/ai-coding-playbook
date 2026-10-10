@@ -3,6 +3,8 @@ import json
 from pathlib import Path
 import re
 
+from .path_safety import require_safe_path
+
 DEFAULT_FORBIDDEN = ["deploy", "delete branches", "change repository permissions"]
 DEFAULT_APPROVALS = ["merge pull request", "expand scope"]
 
@@ -28,7 +30,7 @@ def create_task(project, name, objective, allowed_paths, acceptance):
         "acceptance_criteria": acceptance,
         "approval_required": DEFAULT_APPROVALS,
     }
-    target = project / "tasks" / (name + ".json")
+    target = require_safe_path(project, Path("tasks") / (name + ".json"))
     if target.exists() or target.is_symlink():
         raise FileExistsError("Task already exists: " + str(target))
     target.parent.mkdir(parents=True, exist_ok=True)

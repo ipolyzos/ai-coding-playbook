@@ -33,3 +33,7 @@ Before initialization in an established repository, run `python3 -m aicp inspect
 ## Adopt existing instructions
 
 Use [non-destructive adoption](ADOPTION.md) when a project already has assistant instructions. The generated sidecar is not automatically loaded by assistants.
+
+## Filesystem safety
+
+Task creation rejects symlinked `tasks/` directories, non-directory destination parents, and symlinked project roots. `validate` checks that the configured playbook instructions have safe path ancestry and that tool-specific instruction entrypoints created by `init` still exist. These checks are conservative preflight protections, **not** atomic filesystem isolation against a concurrent attacker. Do not run the CLI in untrusted directories with concurrent modifications or elevated permissions.
