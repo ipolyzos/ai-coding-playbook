@@ -10,6 +10,7 @@ from .tasks import create_task
 from .verification import verify as run_verification
 from .entrypoints import ENTRYPOINTS, install_entrypoint
 from .planning import plan_init
+from .inspection import inspect_project
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ("codex", "claude", "cursor", "copilot", "gemini")
@@ -81,6 +82,8 @@ def main(argv=None):
     init_parser.add_argument("--tool", choices=TOOLS, required=True)
     init_parser.add_argument("--path", type=Path, default=Path("."))
     init_parser.add_argument("--dry-run", action="store_true", help="Preview without writing files")
+    inspect_parser = commands.add_parser("inspect", help="Inventory existing assistant instructions")
+    inspect_parser.add_argument("--path", type=Path, default=Path("."))
     check_parser = commands.add_parser("validate", help="Validate repository setup")
     check_parser.add_argument("--path", type=Path, default=Path("."))
     task_parser = commands.add_parser("task", help="Manage engineering task drafts")
@@ -105,6 +108,8 @@ def main(argv=None):
                 return 0 if preview["ready"] else 1
             result = init(args.path, args.tool)
             print(f"Initialized {result}")
+        elif args.command == "inspect":
+            print(json.dumps(inspect_project(args.path), indent=2))
         elif args.command == "verify":
             validate_config(args.path)
             result = run_verification(args.path, args.checks, args.timeout)
