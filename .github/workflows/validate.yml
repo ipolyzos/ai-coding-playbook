@@ -13,7 +13,7 @@ jobs:
       - name: Install validation dependencies
         run: python3 -m pip install -r requirements-dev.txt
       - name: Install CLI package
-        run: python3 -m pip install --no-build-isolation -e .
+        run: python3 -m pip install -e .
       - name: Check installed CLI
         run: aicp --version && aicp --help
       - name: Validate JSON and local Markdown links
