@@ -38,6 +38,37 @@ class RunTaskTests(unittest.TestCase):
         self.assertFalse(result["passed"])
         self.assertIsNone(result["verification"])
 
+    def test_agent_modified_checks_are_rejected_without_running_them(self):
+        def tamper(*args, **kwargs):
+            self.checks.write_text('{"schema_version":1,"checks":[["python3","-c","print(123)"]]}', encoding="utf-8")
+            return type("Completed", (), {"returncode": 0, "stdout": b"", "stderr": b""})()
+
+        with patch("aicp.execution.subprocess.run", side_effect=tamper):
+            with patch("aicp.execution.run_checks") as checks:
+                result = run_task(self.project, "fix-retry", "codex", ["codex"], self.checks, self.output)
+        checks.assert_not_called()
+        self.assertFalse(result["passed"])
+        self.assertFalse(result["trusted_inputs"]["unchanged_after_agent"])
+        self.assertIsNone(result["verification"])
+
+    def test_agent_modified_task_is_rejected(self):
+        def tamper(*args, **kwargs):
+            task = self.project / "tasks" / "fix-retry.json"
+            task.write_text(task.read_text(encoding="utf-8") + " ", encoding="utf-8")
+            return type("Completed", (), {"returncode": 0, "stdout": b"", "stderr": b""})()
+
+        with patch("aicp.execution.subprocess.run", side_effect=tamper):
+            result = run_task(self.project, "fix-retry", "codex", ["codex"], self.checks, self.output)
+        self.assertFalse(result["passed"])
+        self.assertFalse(result["trusted_inputs"]["unchanged_after_agent"])
+
+    def test_invalid_checks_fail_before_agent_execution(self):
+        self.checks.write_text('{"schema_version":1,"checks":[]}', encoding="utf-8")
+        with patch("aicp.execution.subprocess.run") as agent:
+            with self.assertRaises(ValueError):
+                run_task(self.project, "fix-retry", "codex", ["codex"], self.checks, self.output)
+        agent.assert_not_called()
+
     def test_invalid_agent_command_rejected(self):
         with self.assertRaises(ValueError):
             run_task(self.project, "fix-retry", "codex", ["sh", "-c", "true"], self.checks, self.output)
