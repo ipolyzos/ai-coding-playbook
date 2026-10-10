@@ -20,6 +20,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Review container execution boundaries | [Container security guide](evaluations/benchmarks/CONTAINER_SECURITY.md) |
 | Verify a coding-task submission | [Agent task protocol](evaluations/agent-tasks/README.md) |
 | Record agent run metadata | [Provenance protocol](evaluations/agent-tasks/PROVENANCE.md) |
+| Launch an agent CLI experimentally | [CLI adapter safety guide](evaluations/agent-tasks/CLI_ADAPTER.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
 ## How to use
