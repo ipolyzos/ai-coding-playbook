@@ -16,6 +16,10 @@ Start with [Getting started](GETTING_STARTED.md) for quick setup, the [practical
 - [Local verification](VERIFICATION.md)
 - [Platform compatibility and agent integration](COMPATIBILITY.md)
 
+## Research and evaluation
+
+- [Baseline vs. playbook experimental protocol](EXPERIMENTAL_PROTOCOL.md)
+
 ## Engineering guides
 
 - [Prompt catalog](../prompts/README.md)

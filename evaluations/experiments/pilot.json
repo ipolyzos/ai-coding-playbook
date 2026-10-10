@@ -1,0 +1,15 @@
+{
+  "schema_version": 1,
+  "experiment_id": "synthetic-pilot-v1",
+  "agent": "record-exact-agent-version-and-model-before-running",
+  "fixture_revision": "replace-with-frozen-fixture-commit-sha",
+  "tasks": [
+    "bug-fix",
+    "test-addition",
+    "refactoring",
+    "documentation",
+    "feature"
+  ],
+  "repetitions": 3,
+  "timeout_seconds": 900
+}
