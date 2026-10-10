@@ -37,3 +37,7 @@ Use [non-destructive adoption](ADOPTION.md) when a project already has assistant
 ## Filesystem safety
 
 Task creation rejects symlinked `tasks/` directories, non-directory destination parents, and symlinked project roots. `validate` checks that the configured playbook instructions have safe path ancestry and that tool-specific instruction entrypoints created by `init` still exist. These checks are conservative preflight protections, **not** atomic filesystem isolation against a concurrent attacker. Do not run the CLI in untrusted directories with concurrent modifications or elevated permissions.
+
+## Review existing tasks
+
+Use `python3 -m aicp task list --path /path/to/project` to list and validate local task drafts, `python3 -m aicp task show --path /path/to/project --name fix-retry` to print a task, and `python3 -m aicp task validate --path /path/to/project --name fix-retry` for a machine-readable validity result. Invalid or symlinked task files are rejected. Validation checks structure and basic allowed-path syntax; it **does not enforce agent permissions, inspect whether a task is completed, or execute acceptance criteria**.

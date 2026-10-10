@@ -7,6 +7,7 @@ import sys
 
 from . import __version__
 from .tasks import create_task
+from .task_lifecycle import show_task, list_tasks
 from .verification import verify as run_verification
 from .entrypoints import ENTRYPOINTS, install_entrypoint
 from .planning import plan_init
@@ -109,6 +110,11 @@ def main(argv=None):
     create_parser.add_argument("--objective", required=True)
     create_parser.add_argument("--allow", action="append", required=True)
     create_parser.add_argument("--accept", action="append", required=True)
+    for action in ("validate", "show", "list"):
+        command = task_commands.add_parser(action, help=action.capitalize() + " task drafts")
+        command.add_argument("--path", type=Path, default=Path("."))
+        if action != "list":
+            command.add_argument("--name", required=True)
     verify_parser = commands.add_parser("verify", help="Run explicit project checks")
     verify_parser.add_argument("--path", type=Path, default=Path("."))
     verify_parser.add_argument("--checks", type=Path, required=True)
@@ -145,8 +151,14 @@ def main(argv=None):
             return 0 if result["passed"] else 1
         elif args.command == "task":
             validate_config(args.path)
-            result = create_task(args.path, args.name, args.objective, args.allow, args.accept)
-            print(f"Created task {result}")
+            if args.task_command == "create":
+                result = create_task(args.path, args.name, args.objective, args.allow, args.accept)
+                print(f"Created task {result}")
+            elif args.task_command == "list":
+                print(json.dumps({"tasks": list_tasks(args.path)}, indent=2))
+            else:
+                task = show_task(args.path, args.name)
+                print(json.dumps(task if args.task_command == "show" else {"name": args.name, "valid": True}, indent=2))
         else:
             result = validate_config(args.path)
             print(f"Valid playbook configuration for {result['tool']}")
