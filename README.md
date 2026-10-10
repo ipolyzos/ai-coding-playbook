@@ -23,7 +23,7 @@ Portable, engineering-first prompts and execution contracts for interactive AI c
 | Launch an agent CLI experimentally | [CLI adapter safety guide](evaluations/agent-tasks/CLI_ADAPTER.md) |
 | Contribute | [Contribution guide](CONTRIBUTING.md) |
 
-## How to use
+## Quick setup\n\nUse the dependency-free CLI from a playbook checkout to initialize a separate project:\n\n\`\`\`sh\npython3 -m aicp init --tool codex --path /path/to/project\npython3 -m aicp validate --path /path/to/project\n\`\`\`\n\nSee [CLI usage and limitations](docs/CLI.md). Initialization does not run an agent or install a vendor CLI.\n\n## How to use
 
 1. Pick the smallest prompt matching the engineering task.
 2. Supply concrete context, allowed scope, non-goals, and acceptance criteria.
