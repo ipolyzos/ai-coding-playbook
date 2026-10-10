@@ -72,6 +72,19 @@ class RunTaskTests(unittest.TestCase):
                 run_task(self.project, "fix-retry", "codex", ["codex"], self.checks, self.output)
         agent.assert_not_called()
 
+    def test_container_mode_invokes_docker(self):
+        with patch("aicp.execution.subprocess.run") as agent:
+            agent.return_value.returncode = 1
+            agent.return_value.stdout = b""
+            agent.return_value.stderr = b""
+            result = run_task(
+                self.project, "fix-retry", "codex", ["codex", "exec", "task"],
+                self.checks, self.output, container_image="example/agent:local",
+            )
+        command = agent.call_args.args[0]
+        self.assertEqual(command[:2], ["docker", "run"])
+        self.assertEqual(result["agent"]["execution_mode"], "constrained-docker")
+
     def test_out_of_scope_changes_block_verification(self):
         with patch("aicp.execution.git_snapshot", side_effect=[set(), {"src/fix.py", "secrets.txt"}]):
             with patch("aicp.execution.subprocess.run") as agent:

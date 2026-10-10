@@ -7,6 +7,7 @@ import time
 
 from .task_lifecycle import show_task
 from .scope_audit import git_snapshot, audit_scope
+from .container_runner import docker_agent_command
 from .verification import run_checks, validate_checks
 
 
@@ -28,7 +29,7 @@ def _load_trusted_inputs(project, name, checks_path):
     return task, task_path, task_bytes, checks_bytes, checks
 
 
-def run_task(project, name, tool, argv, checks_path, output, timeout=300):
+def run_task(project, name, tool, argv, checks_path, output, timeout=300, container_image=None):
     if tool not in ("codex", "claude", "gemini"):
         raise ValueError("Only explicitly supported local agent CLIs may run")
     if not argv or argv[0] != tool or not all(isinstance(a, str) and a for a in argv):
@@ -41,9 +42,10 @@ def run_task(project, name, tool, argv, checks_path, output, timeout=300):
     baseline = git_snapshot(project)
     if baseline:
         raise ValueError('Scope audit requires a clean Git worktree before execution')
+    agent_command = docker_agent_command(project, container_image, argv) if container_image else argv
     started = time.monotonic()
     try:
-        proc = subprocess.run(argv, cwd=project, capture_output=True, timeout=timeout, check=False)
+        proc = subprocess.run(agent_command, cwd=project, capture_output=True, timeout=timeout, check=False)
         status, exit_code, stdout, stderr = "completed", proc.returncode, proc.stdout, proc.stderr
     except subprocess.TimeoutExpired as exc:
         status, exit_code, stdout, stderr = "timeout", None, exc.stdout or b"", exc.stderr or b""
@@ -51,6 +53,8 @@ def run_task(project, name, tool, argv, checks_path, output, timeout=300):
         status, exit_code, stdout, stderr = "launch_error", None, b"", str(exc).encode()
     agent = {
         "tool": tool,
+        "execution_mode": "constrained-docker" if container_image else "trusted-host",
+        "container_image": container_image,
         "status": status,
         "exit_code": exit_code,
         "duration_seconds": round(time.monotonic() - started, 3),
@@ -85,7 +89,7 @@ def run_task(project, name, tool, argv, checks_path, output, timeout=300):
             "verification_source": "pre-agent-snapshot",
         },
         "passed": bool(agent["passed"] and inputs_unchanged and scope["passed"] and checks and checks["passed"]),
-        "security_boundary": "trusted-host-execution-no-sandbox",
+        "security_boundary": "constrained-docker-not-hardened" if container_image else "trusted-host-execution-no-sandbox",
         "scope_enforced": False,
     }
     with output.open("x", encoding="utf-8") as handle:

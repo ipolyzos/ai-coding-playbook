@@ -123,6 +123,7 @@ def main(argv=None):
     run_parser.add_argument("--checks", type=Path, required=True)
     run_parser.add_argument("--output", type=Path, required=True)
     run_parser.add_argument("--timeout", type=int, default=300)
+    run_parser.add_argument("--container-image", help="Opt-in constrained Docker execution (no network)")
     run_parser.add_argument("--approve-host-execution", action="store_true", required=True)
     run_parser.add_argument("agent_argv", nargs=argparse.REMAINDER)
     verify_parser = commands.add_parser("verify", help="Run explicit project checks")
@@ -167,7 +168,7 @@ def main(argv=None):
         elif args.command == "run":
             validate_config(args.path)
             argv = args.agent_argv[1:] if args.agent_argv and args.agent_argv[0] == "--" else args.agent_argv
-            report = run_task(args.path, args.name, args.tool, argv, args.checks, args.output, args.timeout)
+            report = run_task(args.path, args.name, args.tool, argv, args.checks, args.output, args.timeout, args.container_image)
             print(f"Execution {'passed' if report['passed'] else 'failed'}: {args.output}")
             return 0 if report["passed"] else 1
         elif args.command == "task":
