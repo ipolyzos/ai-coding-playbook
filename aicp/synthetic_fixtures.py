@@ -44,3 +44,18 @@ def materialize_fixture(name, workspace, evaluator):
     (workspace / "TASK.md").write_text(task["objective"] + "\n", encoding="utf-8")
     (evaluator / "acceptance.py").write_text(task["tests"], encoding="utf-8")
     return {"task": name, "workspace": str(workspace), "evaluator": str(evaluator)}
+
+
+def main():
+    import argparse
+    import json
+    parser = argparse.ArgumentParser(description="Materialize a synthetic benchmark fixture")
+    parser.add_argument("--task", choices=sorted(TASKS), required=True)
+    parser.add_argument("--workspace", type=Path, required=True)
+    parser.add_argument("--evaluator", type=Path, required=True)
+    args = parser.parse_args()
+    print(json.dumps(materialize_fixture(args.task, args.workspace, args.evaluator), indent=2))
+
+
+if __name__ == "__main__":
+    main()
