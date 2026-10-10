@@ -1,5 +1,8 @@
 # Documentation
 
+> **Project status:** This is an experimental personal side project for learning and testing ways to make everyday software engineering work more effective with AI agents. It is not a production-grade framework or an endorsement by any employer or organization. Evaluate its limitations and use your own judgment before applying it to real projects.
+
+
 Start with [Getting started](GETTING_STARTED.md) for quick setup, the [practical walkthrough](PRACTICAL_WALKTHROUGH.md) for a supervised end-to-end example, or the [usage guide](USAGE_GUIDE.md) for additional fictional workflows and privacy guidance.
 
 - [Runnable practical example: synthetic Python service](../examples/practical/README.md)
