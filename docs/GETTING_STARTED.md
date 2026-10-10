@@ -1,6 +1,8 @@
 # Getting started
 
-For a complete worked example, see the [practical walkthrough](PRACTICAL_WALKTHROUGH.md).\n\n## Quick setup
+For a complete worked example, see the [practical walkthrough](PRACTICAL_WALKTHROUGH.md).
+
+## Quick setup
 
 Clone the playbook, then run its dependency-free CLI from the playbook directory to initialize an existing project:
 
