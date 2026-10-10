@@ -148,6 +148,11 @@ def main(argv=None):
                 json.dump(result, handle, indent=2)
                 handle.write("\n")
             print(f"Verification {'passed' if result['passed'] else 'failed'}: {args.output}")
+            summary = result["summary"]
+            print(f"Checks: {summary['passed']}/{summary['total']} passed, {summary['timed_out']} timed out, {summary['launch_errors']} launch errors")
+            for index, check in enumerate(result["checks"], 1):
+                if not check["passed"]:
+                    print(f"  Check {index}: {check['status']} (exit={check['exit_code']})")
             return 0 if result["passed"] else 1
         elif args.command == "task":
             validate_config(args.path)
