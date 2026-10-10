@@ -1,5 +1,10 @@
 # Getting started
 
+## Optional CLI installation
+
+From a playbook checkout with Python 3.10+, run `python3 -m pip install -e .` (preferably inside a virtual environment). This installs the `aicp` command so you can run `aicp --help`, `aicp init`, and `aicp verify` from other working directories. Installation does not install or authenticate any vendor coding assistant. The checkout-based `python3 -m aicp` commands below remain supported. This project is not yet published to a package index.
+
+
 For a complete worked example, see the [practical walkthrough](PRACTICAL_WALKTHROUGH.md). For additional fictional scenarios and privacy guidance, see the [usage guide](USAGE_GUIDE.md).
 
 ## Quick setup
