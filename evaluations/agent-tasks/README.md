@@ -19,3 +19,5 @@ A submission may contain arbitrary code. This container configuration is **not a
 Next steps: immutable task fixtures, hidden acceptance tests, verified adapter execution traces, and aggregate comparisons across tools.
 
 For manually recording declared coding-agent metadata, transcript hashes, and workspace fingerprints, see [run provenance](PROVENANCE.md). This records claims; it does not authenticate agent identity.
+
+For opt-in execution of an installed coding-agent CLI on a dedicated host, see [experimental CLI adapter](CLI_ADAPTER.md). It is not a security sandbox and does not run in CI.
