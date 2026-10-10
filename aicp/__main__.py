@@ -6,6 +6,7 @@ import shutil
 import sys
 
 from . import __version__
+from .tasks import create_task
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ("codex", "claude", "cursor", "copilot", "gemini")
@@ -69,11 +70,23 @@ def main(argv=None):
     init_parser.add_argument("--path", type=Path, default=Path("."))
     check_parser = commands.add_parser("validate", help="Validate repository setup")
     check_parser.add_argument("--path", type=Path, default=Path("."))
+    task_parser = commands.add_parser("task", help="Manage engineering task drafts")
+    task_commands = task_parser.add_subparsers(dest="task_command", required=True)
+    create_parser = task_commands.add_parser("create", help="Create a structured task")
+    create_parser.add_argument("--path", type=Path, default=Path("."))
+    create_parser.add_argument("--name", required=True)
+    create_parser.add_argument("--objective", required=True)
+    create_parser.add_argument("--allow", action="append", required=True)
+    create_parser.add_argument("--accept", action="append", required=True)
     args = parser.parse_args(argv)
     try:
         if args.command == "init":
             result = init(args.path, args.tool)
             print(f"Initialized {result}")
+        elif args.command == "task":
+            validate_config(args.path)
+            result = create_task(args.path, args.name, args.objective, args.allow, args.accept)
+            print(f"Created task {result}")
         else:
             result = validate_config(args.path)
             print(f"Valid playbook configuration for {result['tool']}")
