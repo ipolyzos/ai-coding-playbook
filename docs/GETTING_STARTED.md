@@ -1,6 +1,6 @@
 # Getting started
 
-For a complete worked example, see the [practical walkthrough](PRACTICAL_WALKTHROUGH.md).
+For a complete worked example, see the [practical walkthrough](PRACTICAL_WALKTHROUGH.md). For additional fictional scenarios and privacy guidance, see the [usage guide](USAGE_GUIDE.md).
 
 ## Quick setup
 

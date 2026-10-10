@@ -1,6 +1,6 @@
 # Documentation
 
-Start with [Getting started](GETTING_STARTED.md) for a quick setup, or follow the [practical end-to-end walkthrough](PRACTICAL_WALKTHROUGH.md) for a complete example from onboarding through verification and PR review.
+Start with [Getting started](GETTING_STARTED.md) for quick setup, the [practical walkthrough](PRACTICAL_WALKTHROUGH.md) for a supervised end-to-end example, or the [usage guide](USAGE_GUIDE.md) for additional fictional workflows and privacy guidance.
 
 ## CLI and onboarding
 
