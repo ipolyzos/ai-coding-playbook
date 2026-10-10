@@ -55,3 +55,7 @@ python3 scripts/validate_contracts.py
 python3 -m unittest discover -s tests -v
 python3 scripts/evaluate.py evaluations/fixtures/good-run.json
 ```
+
+## More examples
+
+Follow the [practical walkthrough](PRACTICAL_WALKTHROUGH.md) or explore [fictional engineering workflows](WORKFLOWS.md) for bug fixes, feature development, flaky tests, onboarding, and verification.
