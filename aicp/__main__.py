@@ -9,6 +9,7 @@ from . import __version__
 from .tasks import create_task
 from .verification import verify as run_verification
 from .entrypoints import ENTRYPOINTS, install_entrypoint
+from .planning import plan_init
 
 ROOT = Path(__file__).resolve().parents[1]
 TOOLS = ("codex", "claude", "cursor", "copilot", "gemini")
@@ -41,9 +42,9 @@ def init(destination, tool):
     instructions = destination / "AGENTS.md"
     if config_path.exists() or config_path.is_symlink() or instructions.exists() or instructions.is_symlink():
         raise FileExistsError("Refusing to overwrite .aicp.json or AGENTS.md")
-    extra = ENTRYPOINTS[tool]
-    if extra and ((destination / extra).exists() or (destination / extra).is_symlink()):
-        raise FileExistsError("Refusing to overwrite " + str(destination / extra))
+    preview = plan_init(destination, tool)
+    if not preview["ready"]:
+        raise FileExistsError("Initialization blocked: " + ", ".join(item["path"] for item in preview["files"] if item["action"] == "blocked"))
     content = (
         "# AI Coding Playbook — repository instructions\n\n"
         "Use engineering standards: small scoped changes, explicit acceptance criteria, "
@@ -79,6 +80,7 @@ def main(argv=None):
     init_parser = commands.add_parser("init", help="Initialize a repository")
     init_parser.add_argument("--tool", choices=TOOLS, required=True)
     init_parser.add_argument("--path", type=Path, default=Path("."))
+    init_parser.add_argument("--dry-run", action="store_true", help="Preview without writing files")
     check_parser = commands.add_parser("validate", help="Validate repository setup")
     check_parser.add_argument("--path", type=Path, default=Path("."))
     task_parser = commands.add_parser("task", help="Manage engineering task drafts")
@@ -97,6 +99,10 @@ def main(argv=None):
     args = parser.parse_args(argv)
     try:
         if args.command == "init":
+            if args.dry_run:
+                preview = plan_init(args.path, args.tool)
+                print(json.dumps(preview, indent=2))
+                return 0 if preview["ready"] else 1
             result = init(args.path, args.tool)
             print(f"Initialized {result}")
         elif args.command == "verify":
